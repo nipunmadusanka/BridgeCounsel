@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('webfront.Home.index');
-});
+Route::get('/', [HomeControler::class, 'index'])->name('index');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
@@ -33,6 +31,7 @@ Route::get('/encryption-key', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ProfileController::class, 'dashboard'])->name('dashboard');
     Route::get('/postblog', [ProfileController::class, 'postBlog'])->name('post-blog');
+    Route::post('/addpost', [ProfileController::class, 'addPost'])->name('add-post');
     // Route::get('/chat', [ProfileController::class, 'chat'])->name('chat');
     Route::get('/viewmychat/{id}', [HomeControler::class, 'viewMyChat'])->name('viewmyChat');
     Route::post('/postchat', [HomeControler::class, 'postChat'])->name('postchat');
@@ -42,6 +41,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/blog', [HomeControler::class, 'blogPage'])->name('blog-page');
+Route::get('/viewblog/{id}', [HomeControler::class, 'viewBlog'])->name('view-blog');
 Route::get('/about', [HomeControler::class, 'aboutPage'])->name('about-page');
 
 

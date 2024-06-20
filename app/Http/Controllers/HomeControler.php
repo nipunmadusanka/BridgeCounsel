@@ -5,15 +5,28 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User as UserModel;
 use App\Models\Mychats as MychatModel;
+use App\Models\BlogPosts as BlogPostModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class HomeControler extends Controller
 {
     //
+    public function index()
+    {
+        $blog = BlogPostModel::all();
+        return view('webfront.Home.index', ['blog' => $blog]);
+    }
     public function blogPage()
     {
-        return view('webfront.Blog.index');
+        $blog = BlogPostModel::all();
+
+        return view('webfront.Blog.index', ['blog' => $blog]);
+    }
+
+    public function viewBlog($id){
+        $blog= BlogPostModel::where('id', $id)->first();
+        return view('webfront.Blog.viewblog', ['blog' => $blog]);
     }
 
     public function aboutPage()

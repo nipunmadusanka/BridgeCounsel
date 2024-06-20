@@ -6,66 +6,24 @@
         <!-- component -->
         <div class="bg-white dark:bg-gray-900 h-screen overflow-hidden">
             <div class="container px-6 py-10 mx-auto">
-                <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">From the blog</h1>
+                <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">Pick From the blog</h1>
 
                 <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
-                    <div class="lg:flex">
-                        <img class="object-cover w-full h-56 rounded-lg lg:w-44"
-                            src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                            alt="">
+                    @foreach ($blog->take(8) as $blog)
+                        <div class="lg:flex">
+                            <img class="object-cover w-full h-56 rounded-lg lg:w-44"
+                                src="{{ asset('images/' . $blog->image) }}" alt="">
 
-                        <div class="flex flex-col justify-start gap-4 lg:mx-6">
-                            <a href="#" class="text-xl font-semibold text-gray-800 hover:underline dark:text-white ">
-                                How to use sticky note for problem solving
-                            </a>
+                            <div class="flex flex-col justify-start gap-4 lg:mx-6">
+                                <a href="{{ route('view-blog', ['id' => $blog->id]) }}"
+                                    class="text-xl font-semibold text-gray-800 hover:underline dark:text-white ">
+                                    {{ $blog->title }}
+                                </a>
 
-                            <span class="text-sm text-gray-500 dark:text-gray-300">On: 20 October 2019</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-300">{{ $blog->created_at }}</span>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="lg:flex">
-                        <img class="object-cover w-full h-56 rounded-lg lg:w-44"
-                            src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                            alt="">
-
-                        <div class="flex flex-col justify-start gap-4 lg:mx-6">
-                            <a href="#" class="text-xl font-semibold text-gray-800 hover:underline dark:text-white ">
-                                How to use sticky note for problem solving
-                            </a>
-
-                            <span class="text-sm text-gray-500 dark:text-gray-300">On: 20 October 2019</span>
-                        </div>
-                    </div>
-
-                    <div class="lg:flex">
-                        <img class="object-cover w-full h-56 rounded-lg lg:w-44"
-                            src="https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                            alt="">
-
-                        <div class="flex flex-col justify-start gap-4 lg:mx-6">
-                            <a href="#" class="text-xl font-semibold text-gray-800 hover:underline dark:text-white ">
-                                How to use sticky note for problem solving
-                            </a>
-
-                            <span class="text-sm text-gray-500 dark:text-gray-300">On: 20 October 2019</span>
-                        </div>
-                    </div>
-
-                    <div class="lg:flex">
-                        <img class="object-cover w-full h-56 rounded-lg lg:w-44"
-                            src="https://images.unsplash.com/photo-1530099486328-e021101a494a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1547&q=80"
-                            alt="">
-
-                        <div class="flex flex-col justify-start gap-4 lg:mx-6">
-                            <a href="#" class="text-xl font-semibold text-gray-800 hover:underline dark:text-white ">
-                                How to use sticky note for problem solving
-                            </a>
-
-                            <span class="text-sm text-gray-500 dark:text-gray-300">On: 20 October 2019</span>
-                        </div>
-                    </div>
-
-
+                    @endforeach
 
                 </div>
             </div>

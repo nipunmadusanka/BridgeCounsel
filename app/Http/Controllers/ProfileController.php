@@ -11,6 +11,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\TherapistInfo;
 use App\Models\StudentAnswer;
+use App\Models\BlogPosts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -65,32 +66,42 @@ class ProfileController extends Controller
 
     public function postBlog()
     {
-        return view('post-blog');
+        if (Auth::user()->user_type == 2) {
+            return view('post-blog');
+        } else {
+            return redirect()->back();
+        }
     }
 
-    // public function chat() {
-    //     return view('chat');
-    // }
+    public function addPost(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image file
+        ]);
+
+        $post = new BlogPosts();
+        $post->user_id = Auth::id();
+        $post->title = $request->title;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName); // Save the image to the public/images directory
+            $post->image = $imageName; // Save the image name in the database
+        }
+        $post->content = $request->content;
+        $post->save();
+
+        return response()->json(['success' => 'Blog posted successfully']);
+    }
+
     public function dashboard()
     {
         $userType = Auth::user()->user_type;
         // $special_for = Auth::user()->special_for;
         $userId = Auth::id();
         if ($userType == '2') {
-            // $response = Http::get('http://127.0.0.1:5000/');
-            // $response2 = Http::post('http://127.0.0.1:5000/items', 'hello');
-            // $features = [
-            //     [4, 4, 3, 4, 4, 2, 3, 4, 2]
-            // ];
-
-            // // Make an HTTP POST request to the Flask API with JSON data
-            // $response = Http::post('http://127.0.0.1:5000/predict', [
-            //     'features' => $features
-            // ]);
-
-            // dd($response->json());
-
-
             $therapist_info = TherapistInfo::where('user_id', $userId)->first();
             $sudentall = DB::table('users')
                 ->join('student_infos', 'users.id', '=', 'student_infos.user_id')
@@ -98,8 +109,10 @@ class ProfileController extends Controller
                 ->select('student_infos.*', 'student_answers.*')
                 ->where('student_answers.disease', $therapist_info->special_for)
                 ->get();
-            return view('dashboard', ['therapist_student' => $sudentall]);
-            // dd($sudentall, $therapist_info->special_for);
+
+            $myblogpost = BlogPosts::where('user_id', $userId)->get();
+            return view('dashboard', ['therapist_student' => $sudentall, 'myblogpost' => $myblogpost]);
+
         } elseif ($userType == '1') {
             $student_answer = StudentAnswer::where('user_id', $userId)->first();
             $therapistAll = DB::table('therapist_infos')
@@ -107,8 +120,9 @@ class ProfileController extends Controller
                 ->select('therapist_infos.*', 'users.*')
                 ->where('therapist_infos.special_for', $student_answer->disease)
                 ->get();
-            dd($therapistAll);
+            return view('dashboard', ['therapist_all' => $therapistAll]);
+
         }
-        return view('dashboard');
+
     }
 }

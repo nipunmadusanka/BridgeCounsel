@@ -16,6 +16,14 @@
                         </div>
                         <div class="ml-2 font-bold text-2xl">MyChat</div>
                     </div>
+                    <div class="ml-2 font-bold text-xl text-center py-3">
+                        @if (Auth::user()->user_type == 2)
+                            Hey, I'm Student
+                        @endif
+                        @if (Auth::user()->user_type == 1)
+                            Hey, I'm Therapist
+                        @endif
+                    </div>
                     <div
                         class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
                         <div class="h-20 w-20 rounded-full border overflow-hidden">
@@ -124,7 +132,7 @@
 @endsection
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#mychat').keypress(function(event) {
@@ -229,4 +237,3 @@
 });
 
 </script> --}}
-
