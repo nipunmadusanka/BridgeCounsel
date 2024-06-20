@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('therapist_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('user_type');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->unsignedBigInteger('user_id');
+            $table->string('name')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('reg_no')->nullable();
+            $table->string('special_for')->nullable();
             $table->string('status')->nullable();
             $table->string('note')->nullable();
-            $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('therapist_infos');
     }
 };
